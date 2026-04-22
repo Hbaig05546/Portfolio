@@ -36,6 +36,7 @@
 
 <!-- Three.js for neural network background -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.148.0/build/three.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" crossorigin="anonymous"></script>
 
 <style>
 /* ═══════════════════════════════════════════════
@@ -746,7 +747,7 @@ footer{padding:2.5rem 0;border-top:1px solid var(--border);text-align:center}
 /* ═══════════════════════════════════════════════
    SECTION CANVAS BACKGROUNDS
 ═══════════════════════════════════════════════ */
-#skills,#projects,#about,#experience,#internships,#education,#awards,#certifications{
+#skills,#projects,#about,#experience,#internships,#education,#awards,#certifications,#contact-section{
     position:relative;overflow:hidden;
 }
 .sec-canvas{
@@ -758,7 +759,7 @@ footer{padding:2.5rem 0;border-top:1px solid var(--border);text-align:center}
 /* all section wraps sit above canvas */
 #skills>.wrap,#projects>.wrap,#about>.wrap,
 #experience>.wrap,#internships>.wrap,#education>.wrap,
-#awards>.wrap,#certifications>.wrap{
+#awards>.wrap,#certifications>.wrap,#contact-section>.wrap{
     position:relative;z-index:1;
 }
 
@@ -862,6 +863,90 @@ footer{padding:2.5rem 0;border-top:1px solid var(--border);text-align:center}
 .eq-br{bottom:6%;right:3%}
 .eq-cl{top:42%;left:2%}
 .eq-cr{top:38%;right:3%}
+
+/* ═══════════════════════════════════════════════
+   CONTACT FORM
+═══════════════════════════════════════════════ */
+#contact-section{text-align:center}
+.contact-inner{max-width:600px;margin:0 auto}
+.contact-inner .stitle{margin-bottom:.6rem}
+.contact-sub{color:var(--txt2);font-size:1rem;line-height:1.7;margin-bottom:2rem}
+
+.cf{
+    display:flex;flex-direction:column;gap:1rem;
+    text-align:left;
+}
+.cf-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.cf-field{display:flex;flex-direction:column;gap:.4rem}
+.cf-field label{
+    font-size:.78rem;font-weight:600;color:var(--txt2);
+    font-family:'JetBrains Mono',monospace;
+    letter-spacing:.06em;text-transform:uppercase;
+}
+.cf-field input,
+.cf-field textarea{
+    width:100%;
+    padding:.75rem 1rem;
+    background:var(--card);
+    border:1.5px solid var(--border);
+    border-radius:10px;
+    color:var(--txt1);
+    font-family:'Inter',sans-serif;
+    font-size:.95rem;
+    line-height:1.5;
+    transition:border-color .2s,box-shadow .2s;
+    outline:none;
+    resize:none;
+    box-shadow:var(--card-sh);
+}
+.cf-field input::placeholder,
+.cf-field textarea::placeholder{color:var(--txt3)}
+.cf-field input:focus,
+.cf-field textarea:focus{
+    border-color:var(--ap);
+    box-shadow:var(--card-sh),0 0 0 3px var(--ap0);
+}
+.cf-field textarea{min-height:140px}
+
+.cf-submit{
+    display:flex;align-items:center;gap:1.2rem;
+    flex-wrap:wrap;
+}
+.cf-submit .btn-p{font-size:1rem;padding:.78rem 2rem}
+
+/* status messages */
+.cf-status{
+    font-size:.88rem;font-weight:500;
+    padding:.55rem 1rem;border-radius:8px;
+    display:none;
+}
+.cf-status.success{
+    display:block;
+    color:#059669;background:rgba(5,150,105,.1);
+    border:1px solid rgba(5,150,105,.25);
+}
+.cf-status.error{
+    display:block;
+    color:var(--aw);background:var(--aw0);
+    border:1px solid rgba(198,69,61,.25);
+}
+
+/* ── button loading state ── */
+.btn-p.loading{opacity:.7;cursor:not-allowed;pointer-events:none}
+.btn-p.loading::after{
+    content:'';display:inline-block;
+    width:14px;height:14px;
+    border:2px solid rgba(255,255,255,.3);
+    border-top-color:#fff;
+    border-radius:50%;
+    margin-left:.5rem;
+    animation:spin 0.7s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:600px){
+    .cf-row{grid-template-columns:1fr}
+}
 
 /* ═══════════════════════════════════════════════
    SCROLL REVEAL
@@ -1017,6 +1102,7 @@ footer{padding:2.5rem 0;border-top:1px solid var(--border);text-align:center}
                 <li><a href="#projects"      data-sec="projects">Projects</a></li>
                 <li><a href="#certifications"data-sec="certifications">Learning</a></li>
                 <li><a href="#education"     data-sec="education">Education</a></li>
+                <li><a href="#contact-section" data-sec="contact-section">Contact</a></li>
                 <li><a href="#resume"        data-sec="resume" class="nav-res">Resume</a></li>
                 <li>
                     <div class="sw-wrap">
@@ -1048,6 +1134,7 @@ footer{padding:2.5rem 0;border-top:1px solid var(--border);text-align:center}
     <a href="#projects"       onclick="closeMob()">Projects</a>
     <a href="#certifications" onclick="closeMob()">Learning</a>
     <a href="#education"      onclick="closeMob()">Education</a>
+    <a href="#contact-section" onclick="closeMob()">Contact</a>
     <a href="#resume"         onclick="closeMob()">Resume</a>
 </nav>
 
@@ -1342,6 +1429,46 @@ footer{padding:2.5rem 0;border-top:1px solid var(--border);text-align:center}
 <div id="scroll-bar"></div>
 <div id="cglow"></div>
 
+
+<!-- ═══ CONTACT ════════════════════════════════════════════════ -->
+<section id="contact-section" class="alt">
+    <canvas id="contactCanvas" class="sec-canvas"></canvas>
+    <div class="wrap">
+        <div class="contact-inner rv">
+            <p class="label">Contact</p>
+            <h2 class="stitle">Let's connect</h2>
+            <p class="contact-sub">Open to ML/AI roles, collaborations, and interesting conversations. Drop a message and I'll get back to you.</p>
+
+            <form class="cf" id="contactForm" novalidate>
+                <div class="cf-row">
+                    <div class="cf-field">
+                        <label for="cf-name">Your name</label>
+                        <input id="cf-name" name="from_name" type="text" placeholder="Hamza Khalid" required>
+                    </div>
+                    <div class="cf-field">
+                        <label for="cf-email">Email address</label>
+                        <input id="cf-email" name="reply_to" type="email" placeholder="you@example.com" required>
+                    </div>
+                </div>
+                <div class="cf-field">
+                    <label for="cf-subject">Subject</label>
+                    <input id="cf-subject" name="subject" type="text" placeholder="Opportunity / Collaboration / Hello">
+                </div>
+                <div class="cf-field">
+                    <label for="cf-msg">Message</label>
+                    <textarea id="cf-msg" name="message" placeholder="Tell me what you're working on..." required></textarea>
+                </div>
+                <div class="cf-submit">
+                    <button type="submit" class="btn-p" id="cfSubmitBtn">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        Send message
+                    </button>
+                    <span class="cf-status" id="cfStatus"></span>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
 
 <!-- ═══ RESUME ═════════════════════════════════════════════════ -->
 <section id="resume">
@@ -1951,6 +2078,7 @@ makeSectionBg('internCanvas',  'internships', { r:143,g:179,b:217, count:26, con
 makeSectionBg('eduCanvas',     'education',   { r: 91,g:127,b:166, count:28, connect:172, speed:.20, opacity:.20 });
 /* ── Awards: muted red accent */
 makeSectionBg('awardsCanvas',  'awards',      { r:198,g: 69,b: 61, count:22, connect:158, speed:.18, opacity:.20 });
+makeSectionBg('contactCanvas', 'contact-section', { r: 91,g:127,b:166, count:28, connect:165, speed:.22, opacity:.20 });
 /* ── Gallery: primary blue */
 
 
@@ -2114,6 +2242,80 @@ makeSectionBg('awardsCanvas',  'awards',      { r:198,g: 69,b: 61, count:22, con
     /* Re-run after scroll-reveal animations complete (cards animate in) */
     setTimeout(layout, 900);
     setTimeout(layout, 1800);
+})();
+
+/* ══════════════════════════════════════════════════════════════
+   EMAILJS CONTACT FORM
+   ─────────────────────────────────────────────────────────────
+   SETUP (one-time, ~2 minutes):
+   1. Go to https://www.emailjs.com → sign up free
+   2. Add Email Service → connect your Gmail → copy SERVICE_ID
+   3. Email Templates → Create Template:
+        Subject: "Portfolio contact: {{subject}}"
+        Body:    "From: {{from_name}} ({{reply_to}})\n\n{{message}}"
+      → copy TEMPLATE_ID
+   4. Account → API Keys → copy PUBLIC_KEY
+   5. Replace the three strings below with your values
+══════════════════════════════════════════════════════════════ */
+(function initContactForm() {
+    const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // ← replace
+    const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // ← replace
+    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // ← replace
+
+    /* Don't run until EmailJS SDK is loaded */
+    if (typeof emailjs === 'undefined') {
+        console.warn('EmailJS not loaded — contact form disabled');
+        return;
+    }
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+
+    const form   = document.getElementById('contactForm');
+    const btn    = document.getElementById('cfSubmitBtn');
+    const status = document.getElementById('cfStatus');
+    if (!form) return;
+
+    function setStatus(msg, type) {
+        status.textContent = msg;
+        status.className   = 'cf-status ' + type;
+    }
+    function clearStatus() {
+        status.className   = 'cf-status';
+        status.textContent = '';
+    }
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        clearStatus();
+
+        /* Basic validation */
+        const name  = form.from_name.value.trim();
+        const email = form.reply_to.value.trim();
+        const msg   = form.message.value.trim();
+        if (!name || !email || !msg) {
+            setStatus('Please fill in your name, email and message.', 'error');
+            return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setStatus('Please enter a valid email address.', 'error');
+            return;
+        }
+
+        /* Show loading state */
+        btn.classList.add('loading');
+        btn.disabled = true;
+
+        try {
+            await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form);
+            setStatus('Message sent! I\'ll get back to you soon.', 'success');
+            form.reset();
+        } catch (err) {
+            console.error('EmailJS error:', err);
+            setStatus('Something went wrong. Please email me directly at Hbaig055@gmail.com', 'error');
+        } finally {
+            btn.classList.remove('loading');
+            btn.disabled = false;
+        }
+    });
 })();
 
 /* ══════════════════════════════════════════════════════════════
