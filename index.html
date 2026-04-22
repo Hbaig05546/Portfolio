@@ -37,7 +37,7 @@
 
 
 <!-- Three.js for neural network background -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js" crossorigin="anonymous"></script>
 
 <style>
 /* ═══════════════════════════════════════════════
@@ -283,7 +283,7 @@ nav.scrolled{
 #nnCanvas{
     position:absolute;inset:0;width:100%;height:100%;
     pointer-events:none;z-index:0;
-    opacity:.4;transition:opacity .1s linear;
+    opacity:.58;transition:opacity .1s linear;
 }
 
 .blob{position:absolute;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:2}
@@ -742,7 +742,7 @@ footer{padding:2.5rem 0;border-top:1px solid var(--border);text-align:center}
 /* all section wraps sit above canvas */
 #skills>.wrap,#projects>.wrap,#about>.wrap,
 #experience>.wrap,#internships>.wrap,#education>.wrap,
-#awards>.wrap,,#certifications>.wrap{
+#awards>.wrap,#certifications>.wrap{
     position:relative;z-index:1;
 }
 
