@@ -6,11 +6,10 @@
 <meta name="theme-color" content="#1F2937">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="description" content="Hamza Khalid — ML Engineer building production AI systems. Generative AI, Computer Vision, LLMs at Fynd.">
-<title>Hamza Khalid — ML Engineer</title>
+<title>Hamza Khalid · ML Engineer</title>
 
-<!-- Favicon — inline SVG (no file needed) -->
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+<!-- Favicon — HK monogram on deep navy -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231F2937'/%3E%3Cpath d='M7 8h3v6.5h7V8h3v16h-3v-6.5h-7V24H7V8z' fill='%238FB3D9'/%3E%3C/svg%3E">
 
 <!-- Open Graph -->
 <meta property="og:type"        content="website">
@@ -68,13 +67,15 @@
     --grain:     .020;
     --sw-off:    #2F3E4F;
     --card-sh:   0 2px 12px rgba(0,0,0,.50), 0 8px 28px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.05);
+    --dot:       rgba(91,127,166,.12);
     --ease:      cubic-bezier(.4,0,.2,1);
 }
 
 /* ── LIGHT mode (default) ─────────────────────────────────── */
 [data-theme="light"] {
     --bg:        #F4F5F7;   /* Off White / Background */
-    --bg2:       #E8EAEE;   /* Soft Grey tint */
+    --bg2:       #EDEAE4;   /* very slightly warmer — less jarring */
+    --dot:       rgba(47,62,79,.07);   /* Soft Grey tint */
     --card:      #FFFFFF;   /* pure white cards */
     --border:    #D1D5DB;   /* Soft Grey */
     --border2:   #9BAABB;   /* muted mid-grey */
@@ -101,7 +102,14 @@
    BASE RESET
 ═══════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;font-size:16px}
+html{
+    scroll-behavior:smooth;
+    font-size:16px;
+    /* prevent browsers (esp. Safari/mobile) from auto-scaling text */
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+    min-width:320px;
+}
 
 /* color transition class */
 .ctr *{transition:background-color .4s ease,color .3s ease,border-color .4s ease,box-shadow .4s ease !important}
@@ -111,6 +119,9 @@ body{
     background:var(--bg);color:var(--txt1);
     line-height:1.65;overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
+    /* unified dot-grid texture throughout the entire page */
+    background-image:radial-gradient(circle, var(--dot) 1px, transparent 1px);
+    background-size:28px 28px;
 }
 
 /* grain overlay */
@@ -135,10 +146,16 @@ section{padding:4.2rem 0}
 .alt{background:var(--bg2);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 
 .label{
-    font-family:'Inter',sans-serif;       /* no more code font on labels */
-    font-size:.76rem;color:var(--ap);
-    letter-spacing:.14em;text-transform:uppercase;
-    margin-bottom:.5rem;font-weight:600;
+    font-family:'JetBrains Mono',monospace;
+    font-size:.72rem;color:var(--ap);
+    letter-spacing:.18em;text-transform:uppercase;
+    margin-bottom:.6rem;font-weight:500;
+    display:inline-flex;align-items:center;gap:.5rem;
+}
+.label::before{
+    content:'';display:inline-block;
+    width:18px;height:2px;border-radius:1px;
+    background:var(--aw);flex-shrink:0;
 }
 /* stitle is now the primary section title — make it prominent */
 .stitle{font-size:clamp(2.4rem,5.5vw,3.4rem);font-weight:800;margin-bottom:.9rem;letter-spacing:-.025em;line-height:1.08}
@@ -304,8 +321,8 @@ nav.scrolled{
 }
 .hero-pill{
     display:inline-flex;align-items:center;gap:.5rem;
-    font-family:'JetBrains Mono',monospace;font-size:.8rem;
-    color:var(--aw);padding:.32rem .95rem;
+    font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;
+    color:var(--aw);padding:.3rem 1rem;
     border:1.5px solid rgba(198,69,61,.35);
     border-radius:100px;background:var(--aw0);
     margin-bottom:1.5rem;font-weight:500;
@@ -375,8 +392,8 @@ nav.scrolled{
     transition:border-color .22s,box-shadow .22s;
 }
 .stat-card::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:3px;
-    background:var(--gw);   /* red/amber gradient top line */
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,var(--aw),var(--ap));
 }
 .stat-card:hover{border-color:var(--border2)}
 .stat-v{
