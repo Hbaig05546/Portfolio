@@ -161,7 +161,7 @@ section{padding:4.2rem 0}
 .label::before{
     content:'';display:inline-block;
     width:18px;height:2px;border-radius:1px;
-    background:var(--aw);flex-shrink:0;
+    background:#C6453D;flex-shrink:0;
 }
 /* stitle is now the primary section title — make it prominent */
 .stitle{font-size:clamp(2.4rem,5.5vw,3.4rem);font-weight:800;margin-bottom:.9rem;letter-spacing:-.025em;line-height:1.08}
@@ -221,11 +221,11 @@ nav.scrolled{
 .nav-links a.active::after{transform:scaleX(1)}
 .nav-res{
     padding:.46rem 1.15rem;
-    border:1.5px solid rgba(255,255,255,.5) !important;
+    border:1.5px solid #C6453D !important;
     border-radius:8px;
     color:#FFFFFF !important;
     font-weight:700 !important;
-    background:rgba(255,255,255,.06) !important;
+    background:rgba(198,69,61,.08) !important;
     display:inline-flex !important;
     align-items:center !important;
     justify-content:center !important;
@@ -233,7 +233,7 @@ nav.scrolled{
     line-height:1 !important;
 }
 .nav-res:hover,.nav-res.active{
-    background:rgba(255,255,255,.15) !important;
+    background:#C6453D !important;
     color:#fff !important;
 }
 .nav-res::after{display:none !important}
@@ -333,7 +333,7 @@ nav.scrolled{
     border-radius:100px;background:transparent;
     margin-bottom:1.5rem;font-weight:500;
 }
-.hero-pill::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--txt2);animation:blink 2.2s ease-in-out infinite}
+.hero-pill::before{content:'';width:7px;height:7px;border-radius:50%;background:#C6453D;animation:blink 2.2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
 
 .hero-name{
@@ -364,15 +364,15 @@ nav.scrolled{
 .btn-p{
     display:inline-flex;align-items:center;gap:.45rem;
     padding:.78rem 1.8rem;
-    background:var(--aw);   /* Muted Red — main CTA colour */
+    background:#C6453D;   /* muted red — signature CTA */
     color:#fff;
     font-family:'Inter',sans-serif;font-weight:700;font-size:.95rem;
     border-radius:10px;border:none;cursor:pointer;
     transition:filter .22s,transform .22s,box-shadow .22s;
 }
 .btn-p:hover{
-    filter:brightness(1.1);transform:translateY(-2px);
-    box-shadow:0 10px 28px rgba(198,69,61,.40);
+    filter:brightness(1.08);transform:translateY(-2px);
+    box-shadow:0 10px 28px rgba(198,69,61,.35);
 }
 .btn-o{
     display:inline-flex;align-items:center;gap:.45rem;
@@ -613,6 +613,7 @@ nav.scrolled{
     font-weight:700;position:relative;z-index:1;
 }
 .pc-imp::before{content:'↗  '}
+.pc-imp{color:#16a34a;font-weight:600}
 .pc-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem;position:relative;z-index:1}
 .pt{
     padding:.26rem .68rem;
@@ -1708,8 +1709,8 @@ function toggleProjExpand() {
     let W = hero.clientWidth, H = hero.clientHeight;
 
     const scene    = new THREE.Scene();
-    const camera   = new THREE.PerspectiveCamera(68, W / H, 0.1, 120);
-    camera.position.set(0, 0.4, 12.5);
+    const camera   = new THREE.PerspectiveCamera(74, W / H, 0.1, 120);
+    camera.position.set(0, 0.4, 11.0);
     camera.lookAt(0, 0, 0);
 
     const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -1806,7 +1807,7 @@ function toggleProjExpand() {
     const eGeo = new THREE.BufferGeometry();
     eGeo.setAttribute('position', new THREE.Float32BufferAttribute(ePts, 3));
     eGeo.setAttribute('color',    new THREE.Float32BufferAttribute(eCols, 3));
-    const eMat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.38 });
+    const eMat = new THREE.LineBasicMaterial({ vertexColors: true, transparent: true, opacity: 0.55 });
     scene.add(new THREE.LineSegments(eGeo, eMat));
 
     /* ── Build edge lookup for pulse routing ── */
@@ -1819,7 +1820,7 @@ function toggleProjExpand() {
     }
 
     /* ── Pulses ── */
-    const PULSE_N = isMobile ? 20 : 60;
+    const PULSE_N = isMobile ? 18 : 80;
     const pGeo = new THREE.SphereGeometry(0.058, 8, 8);
     const pulses = Array.from({ length: PULSE_N }, () => {
         const { a, b } = rndEdge();
@@ -1831,7 +1832,7 @@ function toggleProjExpand() {
         const mesh = new THREE.Mesh(pGeo, mat);
         scene.add(mesh);
         /* SLOW idle speed — about 6-12 s per edge traversal */
-        return { mesh, a, b, t: Math.random(), spd: 0.004 + Math.random() * 0.005, hot: false };
+        return { mesh, a, b, t: Math.random(), spd: 0.010 + Math.random() * 0.012, hot: false };
     });
 
     /* ── Layer activation (idle forward-pass) ── */
@@ -1852,6 +1853,39 @@ function toggleProjExpand() {
         hovering = true;
     }, { passive: true });
     hero.addEventListener('mouseleave', () => { hovering = false; mouse.set(9999, 9999); }, { passive: true });
+
+    /* CLICK → find nearest node, fire it with a RED cascade */
+    hero.addEventListener('click', e => {
+        if (!alive) return;
+        const r = hero.getBoundingClientRect();
+        mouse.x =  ((e.clientX - r.left) / r.width)  * 2 - 1;
+        mouse.y = -((e.clientY - r.top)  / r.height) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+
+        /* Find the single closest node */
+        let best = null, bestD = Infinity;
+        nodeMesh.forEach(m => {
+            const d = raycaster.ray.distanceToPoint(m.position);
+            if (d < bestD) { bestD = d; best = m; }
+        });
+        if (best && bestD < 2.5) {
+            /* Fire the clicked node strongly */
+            best.userData.fireTimer = 60;
+            /* Cascade to connected layer: fire 4 red pulses */
+            const li = best.userData.li;
+            for (let k = 0; k < 4; k++) {
+                const spare = pulses[Math.floor(Math.random() * pulses.length)];
+                const edge  = rndEdge(li);
+                if (edge) {
+                    spare.a = edge.a; spare.b = edge.b; spare.t = 0;
+                    spare.spd = 0.045 + Math.random() * 0.02;
+                    spare.hot = true;
+                    spare.mesh.material.color.set(0xC6453D);   /* red pulse */
+                    spare.mesh.material.opacity = 1.0;
+                }
+            }
+        }
+    });
 
     /* ── Animation loop ── */
     let raf, alive = true;
@@ -1924,9 +1958,9 @@ function toggleProjExpand() {
             p.t += p.spd;
             if (p.t >= 1) {
                 const e = rndEdge(); p.a = e.a; p.b = e.b; p.t = 0;
-                p.spd = hovering ? 0.036 + Math.random() * 0.024 : 0.004 + Math.random() * 0.005;
+                p.spd = hovering ? 0.040 + Math.random() * 0.025 : 0.010 + Math.random() * 0.012;
                 p.hot = false;
-                p.mesh.material.color.lerpColors(C0, CW, 0.45 + Math.random() * 0.3);
+                p.mesh.material.color.set(0xAAAAAA);
             }
             p.mesh.position.lerpVectors(p.a, p.b, p.t);
             p.mesh.material.opacity = (0.5 + 0.5 * Math.sin(p.t * Math.PI)) * (p.hot ? 1.0 : 0.88);
@@ -1937,7 +1971,7 @@ function toggleProjExpand() {
 
     /* scroll fade — slightly transparent so it doesn't overpower hero text */
     window.addEventListener('scroll', () => {
-        canvas.style.opacity = (Math.max(0, 1 - scrollY / (innerHeight * 0.78)) * 0.45).toFixed(3);
+        canvas.style.opacity = (Math.max(0, 1 - scrollY / (innerHeight * 0.78)) * 0.65).toFixed(3);
     }, { passive: true });
 
     new IntersectionObserver(([e]) => {
@@ -2140,15 +2174,15 @@ function makeSectionBg(canvasId, secId, opts) {
 
 /* ── Particle colours updated to match new palette: Primary Blue #5B7FA6 · Red accent #C6453D ── */
 /* ── Skills: primary blue */
-makeSectionBg('skillsCanvas',  'skills',      { r: 91,g:127,b:166, count:42, connect:190, speed:.28, opacity:.28 });
+makeSectionBg('skillsCanvas',  'skills',      { r:150,g:150,b:150, count:38, connect:180, speed:.25, opacity:.16 });
 /* ── About: primary blue, sparser */
-makeSectionBg('aboutCanvas',   'about',       { r: 91,g:127,b:166, count:30, connect:175, speed:.22, opacity:.22 });
+makeSectionBg('aboutCanvas',   'about',       { r:140,g:140,b:140, count:26, connect:165, speed:.20, opacity:.13 });
 /* ── Experience: deeper navy-blue */
-makeSectionBg('expCanvas',     'experience',  { r: 47,g: 98,b:138, count:32, connect:178, speed:.24, opacity:.22 });
+makeSectionBg('expCanvas',     'experience',  { r:140,g:140,b:140, count:28, connect:168, speed:.22, opacity:.13 });
 /* ── Internships: light blue accent */
-makeSectionBg('internCanvas',  'internships', { r:143,g:179,b:217, count:26, connect:168, speed:.20, opacity:.22 });
+makeSectionBg('internCanvas',  'internships', { r:140,g:140,b:140, count:22, connect:155, speed:.18, opacity:.12 });
 /* ── Education: primary blue */
-makeSectionBg('eduCanvas',     'education',   { r: 91,g:127,b:166, count:28, connect:172, speed:.20, opacity:.20 });
+makeSectionBg('eduCanvas',     'education',   { r:140,g:140,b:140, count:24, connect:160, speed:.18, opacity:.12 });
 /* ── Awards: muted red accent */
 makeSectionBg('awardsCanvas',  'awards',      { r:130,g:130,b:130, count:20, connect:150, speed:.18, opacity:.10 });
 makeSectionBg('contactCanvas', 'contact-section', { r:140,g:140,b:140, count:24, connect:155, speed:.20, opacity:.10 });
@@ -2388,6 +2422,43 @@ makeSectionBg('contactCanvas', 'contact-section', { r:140,g:140,b:140, count:24,
             btn.classList.remove('loading');
             btn.disabled = false;
         }
+    });
+})();
+
+
+/* ══════════════════════════════════════════════════════════════
+   SIMPLE ICONS — inject brand icons into skill/project tags
+   Source: cdn.simpleicons.org (free, open-source SVG icons)
+══════════════════════════════════════════════════════════════ */
+(function injectIcons(){
+    const MAP = {
+        'PyTorch':'pytorch','TensorFlow':'tensorflow',
+        'Python':'python','Docker':'docker','Django':'django',
+        'FastAPI':'fastapi','Selenium':'selenium','Tableau':'tableau',
+        'GPT-4o':'openai','Gemini':'google','Google ADK':'google',
+        'Google Vision API':'google','Hugging Face':'huggingface',
+        'scikit-learn':'scikitlearn','LangChain':'langchain',
+        'Blender':'blender','OpenCV':'opencv','GitHub':'github',
+        'spaCy':'spacy','Azure DevOps CI/CD':'azuredevops',
+        'Azure DevOps':'azuredevops','SDXL':'stabilityai',
+        'Stable Diffusion':'stabilityai',
+        'Gradio':'gradio','FAL AI':'fal',
+        'RAG':'langchain','Transformers':'huggingface',
+        'CNNs':'pytorch','RNNs / LSTMs':'pytorch',
+        'Transfer Learning':'pytorch',
+        'SQL':'mysql','K-means':'scikitlearn',
+    };
+    document.querySelectorAll('.tg, .pt').forEach(tag => {
+        const txt = tag.textContent.trim();
+        const slug = MAP[txt];
+        if (!slug) return;
+        const img = document.createElement('img');
+        img.src   = `https://cdn.simpleicons.org/${slug}`;
+        img.className = 'si';
+        img.alt   = '';
+        img.loading = 'lazy';
+        img.onerror = () => img.remove();
+        tag.insertBefore(img, tag.firstChild);
     });
 })();
 
