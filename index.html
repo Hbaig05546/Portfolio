@@ -29,6 +29,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+<!-- Tailwind CDN — preflight disabled to avoid CSS conflicts -->
+<script>window.tailwind={config:{corePlugins:{preflight:false}}}</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- AOS — Animate On Scroll -->
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
 
 
@@ -67,15 +73,15 @@
     --nav:       rgba(26,35,48,.93);
     --grain:     .020;
     --sw-off:    #2F3E4F;
-    --card-sh:   0 2px 12px rgba(0,0,0,.50), 0 8px 28px rgba(0,0,0,.38), inset 0 1px 0 rgba(255,255,255,.05);
+    --card-sh:   0 1px 0 rgba(255,255,255,.05), 0 2px 6px rgba(0,0,0,.22);
     --dot:       rgba(91,127,166,.12);
     --ease:      cubic-bezier(.4,0,.2,1);
 }
 
 /* ── LIGHT mode (default) ─────────────────────────────────── */
 [data-theme="light"] {
-    --bg:        #F4F5F7;   /* Off White / Background */
-    --bg2:       #EDEAE4;   /* very slightly warmer — less jarring */
+    --bg:        #FAFAF8;   /* Pure warm white */
+    --bg2:       #F2EFE9;
     --dot:       rgba(47,62,79,.07);   /* Soft Grey tint */
     --card:      #FFFFFF;   /* pure white cards */
     --border:    #D1D5DB;   /* Soft Grey */
@@ -96,7 +102,7 @@
     --nav:       rgba(244,245,247,.96);
     --grain:     .007;
     --sw-off:    #D1D5DB;
-    --card-sh:   0 1px 3px rgba(0,0,0,.06), 0 6px 18px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,1);
+    --card-sh:   0 1px 0 rgba(255,255,255,.9), 0 1px 3px rgba(0,0,0,.06), 0 3px 10px rgba(0,0,0,.05);
 }
 
 /* ═══════════════════════════════════════════════
@@ -120,9 +126,7 @@ body{
     background:var(--bg);color:var(--txt1);
     line-height:1.65;overflow-x:hidden;
     -webkit-font-smoothing:antialiased;
-    /* unified dot-grid texture throughout the entire page */
-    background-image:radial-gradient(circle, var(--dot) 1px, transparent 1px);
-    background-size:28px 28px;
+
 }
 
 /* grain overlay */
@@ -411,19 +415,17 @@ nav.scrolled{
     flex-shrink:0;
 }
 .profile-ring{
-    width:310px;height:310px;border-radius:50%;
-    padding:4px;
-    /* static gradient ring in palette colours */
-    background:linear-gradient(145deg,var(--ap) 0%,var(--aw) 50%,var(--ap) 100%);
-    box-shadow:0 0 32px rgba(91,127,166,.35),0 0 64px rgba(91,127,166,.14);
-    /* NO rotation — static ring */
+    width:290px;height:290px;border-radius:50%;
+    padding:3px;
+    background:linear-gradient(145deg,var(--ap),var(--aw));
+    box-shadow:0 0 28px rgba(91,127,166,.25);
 }
 .profile-ring-inner{
     width:100%;height:100%;border-radius:50%;
     background:var(--bg);
     display:flex;align-items:center;justify-content:center;
     overflow:hidden;
-    /* NO counter-rotation */
+    animation:none;
 }
 .profile-photo{
     width:100%;height:100%;
@@ -1085,6 +1087,61 @@ footer{padding:2.5rem 0;border-top:1px solid var(--border);text-align:center}
     #cglow{display:none !important}
 }
 
+
+/* ═══════════════════════════════════════════════
+   MOBILE MINIMAL — hero centre, accordion, carousels
+═══════════════════════════════════════════════ */
+@media(max-width:768px){
+    .hero-row{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2rem}
+    .hero-pill{justify-content:center}
+    .hero-tag{text-align:center;max-width:100%}
+    .ctas{justify-content:center}
+    .hero-stats{justify-content:center}
+    .nda-hero{justify-content:center;text-align:center}
+}
+@media(max-width:640px){
+    section{padding:2.4rem 0}
+    .shead{margin-bottom:1.6rem}
+    .hero-name{font-size:2.5rem;letter-spacing:-.025em}
+    .stitle{font-size:1.9rem}
+    /* Skills — horizontal scroll chips */
+    .skills-g{display:flex;flex-direction:column;gap:.7rem}
+    .tgs{display:flex;flex-wrap:nowrap;overflow-x:auto;padding-bottom:.4rem;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .tgs::-webkit-scrollbar{display:none}
+    .tg{white-space:nowrap;flex-shrink:0}
+    /* Experience accordion */
+    .bl-collapse{display:none}
+    .bl-collapse.exp-open{display:flex}
+    .exp-show-more{
+        display:flex;align-items:center;gap:.4rem;margin-top:.9rem;
+        font-size:.82rem;font-weight:600;color:var(--ap);
+        background:none;border:none;padding:0;cursor:pointer;font-family:'Inter',sans-serif;
+    }
+    .exp-show-more svg{transition:transform .3s}
+    .exp-show-more.open svg{transform:rotate(180deg)}
+    /* Projects show-more */
+    .pc-hide-mob{display:none}
+    .pc-hide-mob.mob-vis{display:flex}
+    .proj-show-more{
+        display:flex;align-items:center;justify-content:center;gap:.5rem;
+        width:100%;margin-top:1rem;padding:.72rem 1.4rem;
+        background:var(--card);border:1.5px solid var(--border);
+        border-radius:10px;font-size:.88rem;font-weight:600;color:var(--ap);
+        cursor:pointer;font-family:'Inter',sans-serif;transition:border-color .2s;
+    }
+    .proj-show-more:hover{border-color:var(--ap)}
+    /* Internships — stack */
+    .in-grid{grid-template-columns:1fr}
+    /* Alt sections less tinted */
+    .alt{border-top-color:var(--border);border-bottom-color:var(--border)}
+}
+@media(min-width:641px){
+    .bl-collapse{display:flex !important}
+    .exp-show-more{display:none !important}
+    .pc-hide-mob{display:flex !important}
+    .proj-show-more{display:none !important}
+}
+
 </style>
 </head>
 <body>
@@ -1281,13 +1338,17 @@ footer{padding:2.5rem 0;border-top:1px solid var(--border);text-align:center}
                 <li class="bl"><span class="ba">&#9658;</span><span>Built <strong>region-aware hybrid upscaling</strong> using <strong>Sapiens-based segmentation</strong> for lip-level face routing; finalized Real-ESRGAN + SUPIR per region; deployed for FyndSnap editors with strong pattern fidelity on complex and white garments.</span></li>
                 <li class="bl"><span class="ba">&#9658;</span><span>Developed <strong>LLM attribute extraction engine</strong> (spaCy, TF-IDF, Gemini, GPT-4o) with explicit classical vs. LLM usage rules; converted unstructured fashion descriptions to schema-aligned JSON, cutting turnaround from <strong>days to hours</strong>.</span></li>
                 <li class="bl"><span class="ba">&#9658;</span><span>Built <strong>text artifact detection and correction system</strong> using TextSnake, Google Vision API, and color-space harmonization; reduced manual cleanup by approximately <strong>60%</strong>; handed off for production rollout.</span></li>
-                <li class="bl"><span class="ba">&#9658;</span><span>Fine-tuned <strong>SDXL</strong> and <strong>FLUX Dev</strong> for controlled generation and Pantone-shade accuracy; used Ostris toolkit for FyndSnap-oriented training runs; benchmarked FLUX Pro and FLUX Ultra on FAL AI.</span></li>
-                <li class="bl"><span class="ba">&#9658;</span><span>Optimized <strong>PuLID parameters</strong> for cross-pose identity retention; built automated parallel pipelines for PuLID vs. FLUX Kontext comparisons; delivered consistent character libraries for multiple brands across ethnicity, age, and pose specs.</span></li>
-                <li class="bl"><span class="ba">&#9658;</span><span>Built <strong>color transfer and relighting pipelines</strong> with segmentation-based patch profiling; implemented halo-free, edge-aware FyndSnap color correction with hex-level garment controls and mask-boundary handling.</span></li>
-                <li class="bl"><span class="ba">&#9658;</span><span>Expanded <strong>PBR recommender asset library from ~400 to 1,500+ maps</strong>; integrated Cloth Segmentation masking; explored Fabric Diffusion for denim, cotton, and embroidery with Gradio + RAG tooling.</span></li>
-                <li class="bl"><span class="ba">&#9658;</span><span>Built <strong>Django frontend</strong> for Design Agent output reviews with agent tracing, garment-level debugging, and feedback collection; deployed via tagdeploy with <strong>Azure DevOps CI/CD</strong>.</span></li>
-                <li class="bl"><span class="ba">&#9658;</span><span>Built <strong>multi-site web scraping pipelines</strong> (Selenium) for brand and PDP pages, handling anti-bot measures, authenticated sessions, and dynamic URLs; standardized datasets for ML training and captioning.</span></li>
+                <li class="bl bl-collapse"><span class="ba">&#9658;</span><span>Fine-tuned <strong>SDXL</strong> and <strong>FLUX Dev</strong> for controlled generation and Pantone-shade accuracy; used Ostris toolkit for FyndSnap-oriented training runs; benchmarked FLUX Pro and FLUX Ultra on FAL AI.</span></li>
+                <li class="bl bl-collapse"><span class="ba">&#9658;</span><span>Optimized <strong>PuLID parameters</strong> for cross-pose identity retention; built automated parallel pipelines for PuLID vs. FLUX Kontext comparisons; delivered consistent character libraries for multiple brands across ethnicity, age, and pose specs.</span></li>
+                <li class="bl bl-collapse"><span class="ba">&#9658;</span><span>Built <strong>color transfer and relighting pipelines</strong> with segmentation-based patch profiling; implemented halo-free, edge-aware FyndSnap color correction with hex-level garment controls and mask-boundary handling.</span></li>
+                <li class="bl bl-collapse"><span class="ba">&#9658;</span><span>Expanded <strong>PBR recommender asset library from ~400 to 1,500+ maps</strong>; integrated Cloth Segmentation masking; explored Fabric Diffusion for denim, cotton, and embroidery with Gradio + RAG tooling.</span></li>
+                <li class="bl bl-collapse"><span class="ba">&#9658;</span><span>Built <strong>Django frontend</strong> for Design Agent output reviews with agent tracing, garment-level debugging, and feedback collection; deployed via tagdeploy with <strong>Azure DevOps CI/CD</strong>.</span></li>
+                <li class="bl bl-collapse"><span class="ba">&#9658;</span><span>Built <strong>multi-site web scraping pipelines</strong> (Selenium) for brand and PDP pages, handling anti-bot measures, authenticated sessions, and dynamic URLs; standardized datasets for ML training and captioning.</span></li>
             </ul>
+                <button class="exp-show-more" id="expShowMore" onclick="toggleExpand(this,'.bl-collapse')">
+                    Show more experience
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
             <div class="mets">
                 <span class="mp">~60% cleanup reduction</span><span class="mp">~250 SKUs delivered</span>
                 <span class="mp">40+ SKU lifestyle delivery</span><span class="mp">Days &rarr; Hours</span>
@@ -1350,19 +1411,23 @@ footer{padding:2.5rem 0;border-top:1px solid var(--border);text-align:center}
 
             <div class="pc rv"><div class="pc-h"><div class="pc-icon-title"><i class="fa-solid fa-crosshairs"></i><div class="pc-t">Character Consistency — PuLID &amp; FLUX Kontext</div></div><span class="pc-badge">Generative AI</span></div><div class="pc-d">Tuned PuLID for identity retention across pose variation; built automated parallel PuLID vs. FLUX Kontext comparison pipelines. Delivered character libraries across multiple brands.</div><div class="pc-imp">Consistent character libraries for multiple brands</div><div class="pc-tags"><span class="pt">PuLID</span><span class="pt">FLUX Kontext</span><span class="pt">LoRA</span><span class="pt">Face Enhancement</span></div><div class="nda-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Code under NDA — <a href="https://www.linkedin.com/in/hamza-khalid-baig-81b3a7123/" target="_blank" rel="noopener">connect to know more →</a></div></div>
 
-            <div class="pc rv"><div class="pc-h"><div class="pc-icon-title"><i class="fa-solid fa-palette"></i><div class="pc-t">Color Transfer, Relighting &amp; Color Correction</div></div><span class="pc-badge">Computer Vision</span></div><div class="pc-d">Segmentation + patch-profile color transfer for cross-scene consistency. Hex-level garment controls, original-color extraction, classical-CV blending. Halo-free, edge-aware transitions for multi-color garments.</div><div class="pc-imp">Reduced manual editing effort and SKU turnaround time</div><div class="pc-tags"><span class="pt">Segmentation</span><span class="pt">Color Space</span><span class="pt">Alpha Blending</span><span class="pt">Gradio</span></div><div class="nda-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Code under NDA — <a href="https://www.linkedin.com/in/hamza-khalid-baig-81b3a7123/" target="_blank" rel="noopener">connect to know more →</a></div></div>
+            <div class="pc rv pc-hide-mob"><div class="pc-h"><div class="pc-icon-title"><i class="fa-solid fa-palette"></i><div class="pc-t">Color Transfer, Relighting &amp; Color Correction</div></div><span class="pc-badge">Computer Vision</span></div><div class="pc-d">Segmentation + patch-profile color transfer for cross-scene consistency. Hex-level garment controls, original-color extraction, classical-CV blending. Halo-free, edge-aware transitions for multi-color garments.</div><div class="pc-imp">Reduced manual editing effort and SKU turnaround time</div><div class="pc-tags"><span class="pt">Segmentation</span><span class="pt">Color Space</span><span class="pt">Alpha Blending</span><span class="pt">Gradio</span></div><div class="nda-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Code under NDA — <a href="https://www.linkedin.com/in/hamza-khalid-baig-81b3a7123/" target="_blank" rel="noopener">connect to know more →</a></div></div>
 
             <div class="pc pc-wide rv"><div class="pc-h"><div class="pc-icon-title"><i class="fa-solid fa-sliders"></i><div class="pc-t">Diffusion Model Fine-Tuning &amp; Deployment</div></div><span class="pc-badge">Fine-tuning</span></div><div class="pc-d">SDXL, FLUX Dev, and custom model paths for controlled generation quality. Ostris toolkit for FyndSnap-oriented training; Pantone-shade accuracy experiments. FLUX Pro/Ultra benchmarked on FAL AI.</div><div class="pc-imp">Improved Pantone-shade reproduction for production</div><div class="pc-tags"><span class="pt">SDXL</span><span class="pt">FLUX Dev</span><span class="pt">Ostris</span><span class="pt">LoRA</span><span class="pt">FAL AI</span></div><div class="nda-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Code under NDA — <a href="https://www.linkedin.com/in/hamza-khalid-baig-81b3a7123/" target="_blank" rel="noopener">connect to know more →</a></div></div>
 
-            <div class="pc rv"><div class="pc-h"><div class="pc-icon-title"><i class="fa-solid fa-puzzle-piece"></i><div class="pc-t">Artifact Correction &amp; Texture Transfer (PBR)</div></div><span class="pc-badge">Computer Vision</span></div><div class="pc-d">Texture correction with PBR and normal-map processing; seamless tiling improvements. Fabric texture library and automatic texture scale estimation. Cloth Segmentation masking. Fabric Diffusion exploration.</div><div class="pc-imp">PBR library scaled from ~400 to 1,500+ maps</div><div class="pc-tags"><span class="pt">PBR Maps</span><span class="pt">Normal Maps</span><span class="pt">Fabric Diffusion</span><span class="pt">RAG</span><span class="pt">Blender</span></div><div class="nda-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Code under NDA — <a href="https://www.linkedin.com/in/hamza-khalid-baig-81b3a7123/" target="_blank" rel="noopener">connect to know more →</a></div></div>
+            <div class="pc rv pc-hide-mob"><div class="pc-h"><div class="pc-icon-title"><i class="fa-solid fa-puzzle-piece"></i><div class="pc-t">Artifact Correction &amp; Texture Transfer (PBR)</div></div><span class="pc-badge">Computer Vision</span></div><div class="pc-d">Texture correction with PBR and normal-map processing; seamless tiling improvements. Fabric texture library and automatic texture scale estimation. Cloth Segmentation masking. Fabric Diffusion exploration.</div><div class="pc-imp">PBR library scaled from ~400 to 1,500+ maps</div><div class="pc-tags"><span class="pt">PBR Maps</span><span class="pt">Normal Maps</span><span class="pt">Fabric Diffusion</span><span class="pt">RAG</span><span class="pt">Blender</span></div><div class="nda-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Code under NDA — <a href="https://www.linkedin.com/in/hamza-khalid-baig-81b3a7123/" target="_blank" rel="noopener">connect to know more →</a></div></div>
 
-            <div class="pc rv"><div class="pc-h"><div class="pc-icon-title"><i class="fa-solid fa-code-branch"></i><div class="pc-t">Django Internal Review UI + Azure CI/CD</div></div><span class="pc-badge">Infrastructure</span></div><div class="pc-d">Django frontend for Design Agent output reviews with agent tracing, garment-level debugging, and feedback collection. Deployed on FIK via tagdeploy with Azure DevOps CI/CD pipeline.</div><div class="pc-imp">Productionized internal review workflow</div><div class="pc-tags"><span class="pt">Django</span><span class="pt">Azure DevOps</span><span class="pt">CI/CD</span><span class="pt">tagdeploy</span></div><div class="nda-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Code under NDA — <a href="https://www.linkedin.com/in/hamza-khalid-baig-81b3a7123/" target="_blank" rel="noopener">connect to know more →</a></div></div>
+            <div class="pc rv pc-hide-mob"><div class="pc-h"><div class="pc-icon-title"><i class="fa-solid fa-code-branch"></i><div class="pc-t">Django Internal Review UI + Azure CI/CD</div></div><span class="pc-badge">Infrastructure</span></div><div class="pc-d">Django frontend for Design Agent output reviews with agent tracing, garment-level debugging, and feedback collection. Deployed on FIK via tagdeploy with Azure DevOps CI/CD pipeline.</div><div class="pc-imp">Productionized internal review workflow</div><div class="pc-tags"><span class="pt">Django</span><span class="pt">Azure DevOps</span><span class="pt">CI/CD</span><span class="pt">tagdeploy</span></div><div class="nda-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Code under NDA — <a href="https://www.linkedin.com/in/hamza-khalid-baig-81b3a7123/" target="_blank" rel="noopener">connect to know more →</a></div></div>
 
-            <div class="pc rv"><div class="pc-h"><div class="pc-icon-title"><i class="fa-solid fa-bezier-curve"></i><div class="pc-t">Raster-to-SVG Vectorization Pipeline</div></div><span class="pc-badge">Data Engineering</span></div><div class="pc-d">K-means color quantization + vtracer for automated raster-to-AI/SVG conversion with SVG-native scaling. Extended to handle large TIFF images through workflow optimizations.</div><div class="pc-imp">Automated production-ready conversion pipeline</div><div class="pc-tags"><span class="pt">K-means</span><span class="pt">vtracer</span><span class="pt">SVG</span><span class="pt">Color Quantization</span></div><div class="nda-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Code under NDA — <a href="https://www.linkedin.com/in/hamza-khalid-baig-81b3a7123/" target="_blank" rel="noopener">connect to know more →</a></div></div>
+            <div class="pc rv pc-hide-mob"><div class="pc-h"><div class="pc-icon-title"><i class="fa-solid fa-bezier-curve"></i><div class="pc-t">Raster-to-SVG Vectorization Pipeline</div></div><span class="pc-badge">Data Engineering</span></div><div class="pc-d">K-means color quantization + vtracer for automated raster-to-AI/SVG conversion with SVG-native scaling. Extended to handle large TIFF images through workflow optimizations.</div><div class="pc-imp">Automated production-ready conversion pipeline</div><div class="pc-tags"><span class="pt">K-means</span><span class="pt">vtracer</span><span class="pt">SVG</span><span class="pt">Color Quantization</span></div><div class="nda-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Code under NDA — <a href="https://www.linkedin.com/in/hamza-khalid-baig-81b3a7123/" target="_blank" rel="noopener">connect to know more →</a></div></div>
 
             <div class="pc pc-wide rv"><div class="pc-h"><div class="pc-icon-title"><i class="fa-solid fa-spider"></i><div class="pc-t">Multi-Brand Web Scraping Pipeline</div></div><span class="pc-badge">Data Engineering</span></div><div class="pc-d">Multi-site Selenium pipelines with per-site adapters, anti-bot handling, authenticated sessions, and dynamic URLs. Standardized datasets for ML training and captioning.</div><div class="pc-imp">Unblocked large-scale ML training dataset build</div><div class="pc-tags"><span class="pt">Selenium</span><span class="pt">Web Scraping</span><span class="pt">Data Cleaning</span></div><div class="nda-note"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Code under NDA — <a href="https://www.linkedin.com/in/hamza-khalid-baig-81b3a7123/" target="_blank" rel="noopener">connect to know more →</a></div></div>
 
-        </div>
+        
+        <button class="proj-show-more" id="projShowMore" data-open="0" onclick="toggleProjExpand()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+            Show all 12 projects
+        </button></div>
 
         <div style="margin-top:3rem" class="rv"><p class="label">Academic &amp; Personal</p><h3 style="font-family:'Plus Jakarta Sans',sans-serif;font-size:1.1rem;font-weight:800;color:var(--head);margin-bottom:.2rem">Pre-industry projects</h3></div>
         <div class="pers-g">
@@ -1589,36 +1654,43 @@ const statIO = new IntersectionObserver(entries => {
 }, { threshold: .5 });
 document.querySelectorAll('.stat-v[data-count]').forEach(el => statIO.observe(el));
 
-/* ── SCROLL REVEAL — sequential, one-by-one per viewport batch ── */
+/* ── SCROLL REVEAL via AOS + toggle helpers ── */
 (function() {
-    /* Assign each .rv its DOM index so stagger is always correct */
-    const allRv = Array.from(document.querySelectorAll('.rv'));
-    allRv.forEach((el, idx) => el.dataset.rvIdx = idx);
-
-    /* Track how many have already fired per parent grid/list */
-    const parentCount = new Map();
-
-    const revIO = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (!e.isIntersecting) return;
-            const el = e.target;
-
-            /* Count siblings that are also .rv inside the same parent */
-            const parent = el.parentElement;
-            const fired  = (parentCount.get(parent) || 0);
-            parentCount.set(parent, fired + 1);
-
-            /* Stagger: up to 6 siblings delay nicely, beyond that clamp */
-            const delay = Math.min(fired, 5) * 180;
-            el.style.transitionDelay = `${delay}ms`;
-            el.classList.add('in');
-
-            revIO.unobserve(el);
-        });
-    }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
-
-    allRv.forEach(el => revIO.observe(el));
+    /* Auto-tag all .rv elements for AOS */
+    document.querySelectorAll('.rv').forEach((el, i) => {
+        el.setAttribute('data-aos', 'fade-up');
+        el.setAttribute('data-aos-duration', '600');
+        el.setAttribute('data-aos-delay', String(Math.min(i % 4 * 80, 200)));
+        el.setAttribute('data-aos-once', 'true');
+        el.classList.add('in'); /* keep .rv.in so existing CSS still works */
+    });
+    if (typeof AOS !== 'undefined') {
+        AOS.init({ duration:600, once:true, offset:50, easing:'ease-out-cubic' });
+    }
 })();
+
+function toggleExpand(btn, selector) {
+    const items = document.querySelectorAll(selector);
+    const isOpen = btn.classList.contains('open');
+    items.forEach(el => el.classList.toggle('exp-open', !isOpen));
+    btn.classList.toggle('open', !isOpen);
+    const text = btn.childNodes[0];
+    if (text && text.nodeType === 3) {
+        text.textContent = isOpen ? 'Show more experience ' : 'Show less ';
+    }
+}
+
+function toggleProjExpand() {
+    const hidden = document.querySelectorAll('.pc-hide-mob');
+    const btn    = document.getElementById('projShowMore');
+    if (!btn) return;
+    const isOpen = btn.dataset.open === '1';
+    hidden.forEach(el => el.classList.toggle('mob-vis', !isOpen));
+    btn.dataset.open = isOpen ? '0' : '1';
+    btn.innerHTML = isOpen
+        ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg> Show all 12 projects'
+        : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg> Show fewer';
+}
 
 /* ══════════════════════════════════════════════════════════════
    THREE.JS NEURAL NETWORK
