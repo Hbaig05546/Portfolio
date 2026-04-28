@@ -52,27 +52,27 @@
 
 /* ── DARK mode ─────────────────────────────────────────────── */
 :root {
-    --bg:        #1A2330;   /* deep navy – Deep Navy as base */
-    --bg2:       #212E3D;   /* slightly lighter navy */
-    --card:      #263444;   /* card navy */
-    --border:    #2F3E4F;   /* Deep Navy border */
-    --border2:   #4A6080;   /* lighter border */
-    --txt1:      #EEF2F6;   /* near-white */
-    --txt2:      #8FB3D9;   /* Light Blue Accent for secondary text */
-    --txt3:      #5B7FA6;   /* Primary Blue as muted */
-    --head:      #F4F5F7;   /* Off White headings */
-    --ap:        #8FB3D9;   /* Light Blue Accent */
-    --as:        #6BA3C8;   /* slightly deeper blue-teal */
-    --aw:        #C6453D;   /* Muted Red accent */
-    --ap0:       rgba(143,179,217,.13);
-    --as0:       rgba(107,163,200,.13);
-    --aw0:       rgba(198,69,61,.11);
-    --gp:        linear-gradient(135deg,#8FB3D9,#5B7FA6);
-    --gs:        linear-gradient(135deg,#6BA3C8,#4A85B0);
-    --gw:        linear-gradient(135deg,#C6453D,#A33530);
-    --nav:       rgba(26,35,48,.93);
+    --bg:        #080808;
+    --bg2:       #111111;
+    --card:      #181818;
+    --border:    #272727;
+    --border2:   #3A3A3A;
+    --txt1:      #EBEBEB;
+    --txt2:      #888888;
+    --txt3:      #505050;
+    --head:      #F5F5F5;
+    --ap:        #D4D4D4;
+    --as:        #888888;
+    --aw:        #FFFFFF;
+    --ap0:       rgba(212,212,212,.10);
+    --as0:       rgba(136,136,136,.10);
+    --aw0:       rgba(255,255,255,.07);
+    --gp:        linear-gradient(135deg,#FFFFFF,#888888);
+    --gs:        linear-gradient(135deg,#AAAAAA,#555555);
+    --gw:        linear-gradient(135deg,#FFFFFF,#CCCCCC);
+    --nav:       rgba(8,8,8,.96);
     --grain:     .020;
-    --sw-off:    #2F3E4F;
+    --sw-off:    #2A2A2A;
     --card-sh:   0 1px 0 rgba(255,255,255,.05), 0 2px 6px rgba(0,0,0,.22);
     --dot:       rgba(91,127,166,.12);
     --ease:      cubic-bezier(.4,0,.2,1);
@@ -80,29 +80,30 @@
 
 /* ── LIGHT mode (default) ─────────────────────────────────── */
 [data-theme="light"] {
-    --bg:        #FAFAF8;   /* Pure warm white */
-    --bg2:       #F2EFE9;
+    --bg:        #FFFFFF;
+    --bg2:       #F5F5F5;
     --dot:       rgba(47,62,79,.07);   /* Soft Grey tint */
     --card:      #FFFFFF;   /* pure white cards */
     --border:    #D1D5DB;   /* Soft Grey */
     --border2:   #9BAABB;   /* muted mid-grey */
-    --txt1:      #1F2933;   /* Charcoal Text */
-    --txt2:      #4A5B6A;   /* medium charcoal */
-    --txt3:      #8895A3;   /* muted */
-    --head:      #1A2330;   /* Deep Navy headings */
-    --ap:        #5B7FA6;   /* Primary Blue */
-    --as:        #2F6B9A;   /* slightly deeper blue for contrast */
-    --aw:        #C6453D;   /* Muted Red accent */
-    --ap0:       rgba(91,127,166,.10);
-    --as0:       rgba(47,107,154,.10);
-    --aw0:       rgba(198,69,61,.09);
-    --gp:        linear-gradient(135deg,#5B7FA6,#2F3E4F);
-    --gs:        linear-gradient(135deg,#2F6B9A,#1E5480);
-    --gw:        linear-gradient(135deg,#C6453D,#A33530);
-    --nav:       rgba(244,245,247,.96);
+    --txt1:      #111111;
+    --txt2:      #555555;
+    --txt3:      #999999;
+    --head:      #000000;
+    --ap:        #111111;
+    --as:        #555555;
+    --aw:        #000000;
+    --ap0:       rgba(17,17,17,.08);
+    --as0:       rgba(85,85,85,.08);
+    --aw0:       rgba(0,0,0,.06);
+    --gp:        linear-gradient(135deg,#111111,#444444);
+    --gs:        linear-gradient(135deg,#555555,#333333);
+    --gw:        linear-gradient(135deg,#000000,#444444);
+    --nav:       rgba(255,255,255,.97);
     --grain:     .007;
-    --sw-off:    #D1D5DB;
-    --card-sh:   0 1px 0 rgba(255,255,255,.9), 0 1px 3px rgba(0,0,0,.06), 0 3px 10px rgba(0,0,0,.05);
+    --sw-off:    #DDDDDD;
+    --card-sh:   0 1px 0 rgba(255,255,255,.95), 0 1px 3px rgba(0,0,0,.07), 0 3px 10px rgba(0,0,0,.04);
+    --dot:       rgba(0,0,0,.05);
 }
 
 /* ═══════════════════════════════════════════════
@@ -183,20 +184,20 @@ strong{color:var(--head) !important;font-weight:700}
 nav{
     position:fixed;top:0;left:0;right:0;z-index:200;
     /* Always deep navy — strong presence in both modes */
-    background:rgba(31,41,55,.96);
+    background:rgba(10,10,10,.97);
     backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
-    border-bottom:1px solid rgba(91,127,166,.18);
+    border-bottom:1px solid rgba(255,255,255,.08);
     transition:border-color .3s,box-shadow .3s;
 }
 nav.scrolled{
-    border-bottom-color:rgba(91,127,166,.35);
+    border-bottom-color:rgba(255,255,255,.15);
     box-shadow:0 4px 32px rgba(0,0,0,.45);
 }
 .nav-in{display:flex;align-items:center;justify-content:space-between;height:104px}
 .logo{
     font-family:'Plus Jakarta Sans',sans-serif;
     font-size:1.65rem;font-weight:800;
-    color:#8FB3D9;  /* light blue — always visible on dark nav */
+    color:#DDDDDD;
     letter-spacing:-.015em;
 }
 .logo em{color:#C6453D;font-style:normal} /* red accent dot */
@@ -204,7 +205,7 @@ nav.scrolled{
 .nav-links{display:flex;align-items:center;gap:1.5rem}
 .nav-links a{
     font-size:1rem;font-weight:500;
-    color:rgba(200,212,228,.78);   /* works on dark navbar in both themes */
+    color:rgba(200,200,200,.75);
     position:relative;padding-bottom:3px;
     transition:color .2s;
 }
@@ -220,11 +221,11 @@ nav.scrolled{
 .nav-links a.active::after{transform:scaleX(1)}
 .nav-res{
     padding:.46rem 1.15rem;
-    border:1.5px solid #C6453D !important;
+    border:1.5px solid rgba(255,255,255,.5) !important;
     border-radius:8px;
-    color:#C6453D !important;
+    color:#FFFFFF !important;
     font-weight:700 !important;
-    background:rgba(198,69,61,.12) !important;
+    background:rgba(255,255,255,.06) !important;
     display:inline-flex !important;
     align-items:center !important;
     justify-content:center !important;
@@ -232,7 +233,7 @@ nav.scrolled{
     line-height:1 !important;
 }
 .nav-res:hover,.nav-res.active{
-    background:#C6453D !important;
+    background:rgba(255,255,255,.15) !important;
     color:#fff !important;
 }
 .nav-res::after{display:none !important}
@@ -267,7 +268,7 @@ nav.scrolled{
 .burger span{display:block;width:22px;height:2px;background:var(--txt1);border-radius:2px;transition:all .25s}
 .mob-nav{
     display:none;position:fixed;top:104px;left:0;right:0;
-    background:rgba(31,41,55,.98);border-bottom:1px solid rgba(91,127,166,.25);
+    background:rgba(10,10,10,.98);border-bottom:1px solid rgba(255,255,255,.08);
     padding:1rem 1.5rem;z-index:199;flex-direction:column;
 }
 .mob-nav.open{display:flex}
@@ -327,12 +328,12 @@ nav.scrolled{
 .hero-pill{
     display:inline-flex;align-items:center;gap:.5rem;
     font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;
-    color:var(--aw);padding:.3rem 1rem;
-    border:1.5px solid rgba(198,69,61,.35);
-    border-radius:100px;background:var(--aw0);
+    color:var(--txt2);padding:.3rem 1rem;
+    border:1.5px solid var(--border2);
+    border-radius:100px;background:transparent;
     margin-bottom:1.5rem;font-weight:500;
 }
-.hero-pill::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--aw);animation:blink 2.2s ease-in-out infinite}
+.hero-pill::before{content:'';width:7px;height:7px;border-radius:50%;background:var(--txt2);animation:blink 2.2s ease-in-out infinite}
 @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
 
 .hero-name{
@@ -345,7 +346,7 @@ nav.scrolled{
     font-size:clamp(1.05rem,2.5vw,1.3rem);font-weight:500;
     color:var(--txt2);margin-bottom:1.3rem;
 }
-.hero-role strong{color:var(--aw);font-weight:700} /* red accent */
+.hero-role strong{color:var(--head);font-weight:700}
 .hero-tag{
     font-size:1.1rem;color:var(--txt2);
     max-width:540px;line-height:1.85;
@@ -398,13 +399,13 @@ nav.scrolled{
 }
 .stat-card::before{
     content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:linear-gradient(90deg,var(--aw),var(--ap));
+    background:linear-gradient(90deg,var(--border2),var(--txt2));
 }
 .stat-card:hover{border-color:var(--border2)}
 .stat-v{
     font-family:'Plus Jakarta Sans',sans-serif;
     font-size:2rem;font-weight:800;
-    color:var(--aw);  /* red for impact numbers */
+    color:var(--head);
     line-height:1;margin-bottom:.42rem;
 }
 .stat-l{font-size:.84rem;color:var(--txt2);line-height:1.5;font-weight:500}
@@ -432,10 +433,10 @@ nav.scrolled{
     object-fit:cover;object-position:center top;
     border-radius:50%;
     /* filter tuned to match the palette: warm, slightly cooler blue tones */
-    filter:brightness(1.04) saturate(1.10) contrast(1.03);
+    filter:grayscale(100%) contrast(1.05) brightness(1.02);
 }
 [data-theme="dark"] .profile-photo{
-    filter:brightness(0.95) saturate(0.92) contrast(1.06) hue-rotate(-5deg);
+    filter:grayscale(100%) contrast(1.08) brightness(0.92);
 }
 .profile-init{
     font-family:'Plus Jakarta Sans',sans-serif;
@@ -1717,10 +1718,10 @@ function toggleProjExpand() {
     renderer.setClearColor(0x000000, 0);
 
     /* Left=red, middle=blue, right=navy; CW=blue for visible pulses */
-    const C0 = new THREE.Color(0xC6453D); // Muted Red — input/left
-    const C1 = new THREE.Color(0x5B7FA6); // Primary Blue — middle
-    const C2 = new THREE.Color(0x2F3E4F); // Deep Navy — output/right
-    const CW = new THREE.Color(0x5B7FA6); // Primary Blue for pulses (visible in day mode)
+    const C0 = new THREE.Color(0xFFFFFF); // White — input
+    const C1 = new THREE.Color(0x888888); // Gray — middle
+    const C2 = new THREE.Color(0x333333); // Dark gray — output
+    const CW = new THREE.Color(0xFFFFFF); // White for pulses
     function lerpColor(t) {                 // t in [0,1]
         if (t < 0.5) return C0.clone().lerp(C1, t * 2);
         return C1.clone().lerp(C2, (t - 0.5) * 2);
@@ -1936,7 +1937,7 @@ function toggleProjExpand() {
 
     /* scroll fade — slightly transparent so it doesn't overpower hero text */
     window.addEventListener('scroll', () => {
-        canvas.style.opacity = (Math.max(0, 1 - scrollY / (innerHeight * 0.78)) * 0.58).toFixed(3);
+        canvas.style.opacity = (Math.max(0, 1 - scrollY / (innerHeight * 0.78)) * 0.45).toFixed(3);
     }, { passive: true });
 
     new IntersectionObserver(([e]) => {
@@ -2149,8 +2150,8 @@ makeSectionBg('internCanvas',  'internships', { r:143,g:179,b:217, count:26, con
 /* ── Education: primary blue */
 makeSectionBg('eduCanvas',     'education',   { r: 91,g:127,b:166, count:28, connect:172, speed:.20, opacity:.20 });
 /* ── Awards: muted red accent */
-makeSectionBg('awardsCanvas',  'awards',      { r:198,g: 69,b: 61, count:22, connect:158, speed:.18, opacity:.20 });
-makeSectionBg('contactCanvas', 'contact-section', { r: 91,g:127,b:166, count:28, connect:165, speed:.22, opacity:.20 });
+makeSectionBg('awardsCanvas',  'awards',      { r:130,g:130,b:130, count:20, connect:150, speed:.18, opacity:.10 });
+makeSectionBg('contactCanvas', 'contact-section', { r:140,g:140,b:140, count:24, connect:155, speed:.20, opacity:.10 });
 /* ── Gallery: primary blue */
 
 
