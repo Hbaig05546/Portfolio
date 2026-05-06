@@ -251,18 +251,18 @@ nav.scrolled{
 .sw-wrap:hover .sw-lbl{opacity:.82;transform:scale(1.1)}
 .sw{
     width:48px;height:26px;border-radius:100px;
-    background:var(--sw-off);border:1px solid var(--border2);
+    background:#3A3A3A;border:1.5px solid rgba(255,255,255,.25);
     position:relative;cursor:pointer;padding:0;flex-shrink:0;
     transition:background .35s,border-color .35s;
 }
 .sw.on{background:var(--ap);border-color:var(--ap)}
 .sw-knob{
     position:absolute;top:3px;left:3px;
-    width:18px;height:18px;border-radius:50%;
-    background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.3);
+    width:20px;height:20px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.5);
     transition:transform .3s cubic-bezier(.4,0,.2,1);
 }
-.sw.on .sw-knob{transform:translateX(22px)}
+.sw.on .sw-knob{transform:translateX(24px)}
 
 .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
 .burger span{display:block;width:22px;height:2px;background:var(--txt1);border-radius:2px;transition:all .25s}
