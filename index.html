@@ -257,12 +257,13 @@ nav.scrolled{
 }
 .sw.on{background:var(--ap);border-color:var(--ap)}
 .sw-knob{
-    position:absolute;top:3px;left:3px;
+    position:absolute;top:50%;left:4px;
+    transform:translateY(-50%);
     width:20px;height:20px;border-radius:50%;
     background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.5);
     transition:transform .3s cubic-bezier(.4,0,.2,1);
 }
-.sw.on .sw-knob{transform:translateX(24px)}
+.sw.on .sw-knob{transform:translateY(-50%) translateX(24px)}
 
 .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px}
 .burger span{display:block;width:22px;height:2px;background:var(--txt1);border-radius:2px;transition:all .25s}
@@ -449,7 +450,7 @@ nav.scrolled{
 /* ═══════════════════════════════════════════════
    ABOUT
 ═══════════════════════════════════════════════ */
-.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:start;margin-top:.5rem}
 .about-text p{color:var(--txt2);font-size:1.08rem;line-height:1.88;margin-bottom:1rem;text-align:justify}
 .about-text p:last-child{margin-bottom:0}
 .about-text strong{color:var(--head);font-weight:700}
@@ -471,7 +472,7 @@ nav.scrolled{
     transition:border-color .22s,transform .22s,box-shadow .22s;
 }
 .hi:hover{border-color:var(--border2);transform:translateX(5px);box-shadow:var(--card-sh),0 0 0 1px var(--border2)}
-.hi-ico{font-size:1.4rem;flex-shrink:0;margin-top:2px}
+.hi-ico{font-size:1.1rem;flex-shrink:0;margin-top:3px;color:var(--ap);width:1.4rem;text-align:center}
 .hi-t{font-weight:700;font-size:.98rem;color:var(--head);margin-bottom:.18rem}
 .hi-d{font-size:.86rem;color:var(--txt2);line-height:1.62;text-align:justify}
 
@@ -1278,11 +1279,10 @@ footer{padding:2.5rem 0;border-top:1px solid var(--border);text-align:center}
     <span class="eq eq-tr" style="font-size:2.6rem">σ(z) = 1 / (1 + e<sup>−z</sup>)</span>
     <span class="eq eq-bl" style="font-size:2.2rem">ŷ = f(W<sup>T</sup>x + b)</span>
     <div class="wrap">
+        <div class="shead rv"><p class="label">About</p><h2 class="stitle">About</h2></div>
         <div class="about-grid">
             <div class="rv">
-                <p class="label">About</p>
-                <h2 class="stitle">About</h2>
-                <p>I'm an ML Engineer at <strong>Fynd (Shopsense Retail Technologies Ltd.)</strong>, shipping end-to-end machine learning systems since July 2024. My work bridges <strong>generative AI, computer vision, and data engineering</strong> — building systems that hold up in production under real constraints, not just in notebooks.</p>
+                <p>I work on ML systems at <strong>Fynd (Shopsense Retail Technologies Ltd.)</strong> — diffusion models, multi-agent pipelines, computer vision. Since July 2024, the work has ranged from training runs to shipped production features.</p>
                 <div class="about-bullets">
                     <div class="ab"><div class="ab-dot"></div><span>Work across diffusion model fine-tuning (SDXL, FLUX Dev) and multi-agent orchestration on <strong>Google ADK</strong> — from experiment to shipped pipeline.</span></div>
                     <div class="ab"><div class="ab-dot"></div><span>Build computer vision pipelines for production: upscaling, face correction, colour transfer, artifact detection — each one scoped to a real quality bar.</span></div>
