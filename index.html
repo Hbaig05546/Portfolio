@@ -286,8 +286,21 @@ nav.scrolled{
     position:relative;overflow:hidden;padding-top:104px;
 }
 
-/* full-width canvas — no mask, let the network span edge to edge */
-#nnCanvas{ /* mask removed — see full graph */ }
+/* Strong mask: text area (left) nearly transparent, network visible on right */
+#nnCanvas{
+    -webkit-mask-image:linear-gradient(to right,
+        transparent 0%,
+        rgba(255,255,255,.08) 15%,
+        rgba(255,255,255,.45) 38%,
+        rgba(255,255,255,.85) 55%,
+        white 70%);
+    mask-image:linear-gradient(to right,
+        transparent 0%,
+        rgba(255,255,255,.08) 15%,
+        rgba(255,255,255,.45) 38%,
+        rgba(255,255,255,.85) 55%,
+        white 70%);
+}
 
 /* grid */
 #hero::before{
@@ -1801,9 +1814,9 @@ function toggleExpand(btn, selector) {
     const NL = LAYER_DEF.length;
 
     /* ── Build nodes ── */
-    /* smaller circles but overall network +20% bigger */
-    const nodeGeo = new THREE.SphereGeometry(0.095, 14, 14);
-    const glowGeo = new THREE.SphereGeometry(0.28, 10, 10);
+    /* smaller nodes — less interference with text */
+    const nodeGeo = new THREE.SphereGeometry(0.072, 12, 12);
+    const glowGeo = new THREE.SphereGeometry(0.18, 8, 8);
     const nodePos = [];       // per-layer arrays of Vec3
     const nodeMesh = [];      // flat list
     const layerMeshes = [];   // per-layer mesh arrays
@@ -1844,7 +1857,7 @@ function toggleExpand(btn, selector) {
             /* glow halo */
             const gMat = new THREE.MeshBasicMaterial({
                 color: col.clone(), transparent: true,
-                opacity: isLightMode() ? 0.06 : 0.13,  /* dimmer glow in light mode */
+                opacity: isLightMode() ? 0.05 : 0.07,  /* both modes: glow stays subtle */
                 blending: THREE.AdditiveBlending, depthWrite: false
             });
             const gm = new THREE.Mesh(glowGeo, gMat);
@@ -2043,7 +2056,7 @@ function toggleExpand(btn, selector) {
 
     /* scroll fade — slightly transparent so it doesn't overpower hero text */
     window.addEventListener('scroll', () => {
-        const maxOp = isLightMode() ? 0.50 : 0.48;  /* both modes: stays behind text */
+        const maxOp = isLightMode() ? 0.50 : 0.42;  /* dark: slightly further back */
         canvas.style.opacity = (Math.max(0, 1 - scrollY / (innerHeight * 0.78)) * maxOp).toFixed(3);
     }, { passive: true });
 
