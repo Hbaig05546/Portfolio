@@ -1754,7 +1754,17 @@ function toggleExpand(btn, selector) {
     const C1 = new THREE.Color(0x888888); // Gray — middle
     const C2 = new THREE.Color(0x333333); // Dark gray — output
     const CW = new THREE.Color(0xFFFFFF); // White for pulses
+    function isLightMode() {
+        return document.documentElement.getAttribute('data-theme') === 'light';
+    }
+    /* Light mode: very subtle muted-red tint on nodes — barely visible against white bg */
+    const LR_A = new THREE.Color(0xDDA8A4); /* light rose — input side  */
+    const LR_B = new THREE.Color(0xC68480); /* slightly deeper — output side */
     function lerpColor(t) {                 // t in [0,1]
+        if (isLightMode()) {
+            /* Very light muted red — input light rose → output slightly deeper rose */
+            return LR_A.clone().lerp(LR_B, t);
+        }
         if (t < 0.5) return C0.clone().lerp(C1, t * 2);
         return C1.clone().lerp(C2, (t - 0.5) * 2);
     }
@@ -1812,7 +1822,8 @@ function toggleExpand(btn, selector) {
 
             /* glow halo */
             const gMat = new THREE.MeshBasicMaterial({
-                color: col.clone(), transparent: true, opacity: 0.13,
+                color: col.clone(), transparent: true,
+                opacity: isLightMode() ? 0.06 : 0.13,  /* dimmer glow in light mode */
                 blending: THREE.AdditiveBlending, depthWrite: false
             });
             const gm = new THREE.Mesh(glowGeo, gMat);
@@ -2002,7 +2013,8 @@ function toggleExpand(btn, selector) {
 
     /* scroll fade — slightly transparent so it doesn't overpower hero text */
     window.addEventListener('scroll', () => {
-        canvas.style.opacity = (Math.max(0, 1 - scrollY / (innerHeight * 0.78)) * 0.65).toFixed(3);
+        const maxOp = isLightMode() ? 0.50 : 0.65;  /* subtler in light mode */
+        canvas.style.opacity = (Math.max(0, 1 - scrollY / (innerHeight * 0.78)) * maxOp).toFixed(3);
     }, { passive: true });
 
     new IntersectionObserver(([e]) => {
