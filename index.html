@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -1641,7 +1641,20 @@ function toggleTheme() {
     setTimeout(() => document.documentElement.classList.remove('ctr'), 450);
     setTheme(n); localStorage.setItem('theme', n);
 }
-setTheme(localStorage.getItem('theme') || 'light');
+/* Auto-detect OS/browser dark-mode preference; user toggle overrides */
+(function(){
+    const saved = localStorage.getItem('theme');
+    if (saved) { setTheme(saved); return; }
+    /* Use OS preference, falling back to dark */
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    setTheme(prefersDark ? 'dark' : 'light');
+})();
+/* Live-update if OS mode changes AND user hasn't manually chosen */
+if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+        if (!localStorage.getItem('theme')) setTheme(e.matches ? 'dark' : 'light');
+    });
+}
 document.getElementById('sw1').addEventListener('click', toggleTheme);
 document.getElementById('sw2').addEventListener('click', toggleTheme);
 
@@ -1812,7 +1825,8 @@ function toggleExpand(btn, selector) {
 
             /* main node */
             const nMat = new THREE.MeshBasicMaterial({
-                color: col.clone(), transparent: true, opacity: 0.85
+                color: col.clone(), transparent: true,
+                opacity: isLightMode() ? 0.82 : 0.70  /* softer in dark mode */
             });
             const nm = new THREE.Mesh(nodeGeo, nMat);
             nm.position.copy(pos);
@@ -1848,10 +1862,19 @@ function toggleExpand(btn, selector) {
         ePts.push(a.x, a.y, a.z, b.x, b.y, b.z);
         eCols.push(ca.r, ca.g, ca.b, cb.r, cb.g, cb.b);
     }
+    /* Sparse connections — each pair connects with 52% probability (~half of full mesh) */
+    const rng = (seed) => { let x = Math.sin(seed) * 43758.5; return x - Math.floor(x); };
     for (let l = 0; l < NL - 1; l++) {
-        const ca = edgeColor(l / (NL - 1));        /* always gray */
-        const cb = edgeColor((l + 1) / (NL - 1)); /* always gray */
-        nodePos[l].forEach(a => nodePos[l + 1].forEach(b => addEdge(a, b, ca, cb)));
+        const ca = edgeColor(l / (NL - 1));
+        const cb = edgeColor((l + 1) / (NL - 1));
+        nodePos[l].forEach((a, ai) => {
+            nodePos[l + 1].forEach((b, bi) => {
+                /* deterministic seed so same connections each load */
+                if (rng(l * 100 + ai * 13 + bi * 7) < 0.52) {
+                    addEdge(a, b, ca, cb);
+                }
+            });
+        });
     }
     const eGeo = new THREE.BufferGeometry();
     eGeo.setAttribute('position', new THREE.Float32BufferAttribute(ePts, 3));
@@ -2020,7 +2043,7 @@ function toggleExpand(btn, selector) {
 
     /* scroll fade — slightly transparent so it doesn't overpower hero text */
     window.addEventListener('scroll', () => {
-        const maxOp = isLightMode() ? 0.50 : 0.65;  /* subtler in light mode */
+        const maxOp = isLightMode() ? 0.50 : 0.48;  /* both modes: stays behind text */
         canvas.style.opacity = (Math.max(0, 1 - scrollY / (innerHeight * 0.78)) * maxOp).toFixed(3);
     }, { passive: true });
 
