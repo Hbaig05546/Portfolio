@@ -1760,11 +1760,18 @@ function toggleExpand(btn, selector) {
     /* Light mode: very subtle muted-red tint on nodes — barely visible against white bg */
     const LR_A = new THREE.Color(0xDDA8A4); /* light rose — input side  */
     const LR_B = new THREE.Color(0xC68480); /* slightly deeper — output side */
+
+    /* NODE colour — red tint in light mode, gray gradient in dark */
     function lerpColor(t) {                 // t in [0,1]
         if (isLightMode()) {
-            /* Very light muted red — input light rose → output slightly deeper rose */
             return LR_A.clone().lerp(LR_B, t);
         }
+        if (t < 0.5) return C0.clone().lerp(C1, t * 2);
+        return C1.clone().lerp(C2, (t - 0.5) * 2);
+    }
+
+    /* EDGE colour — always gray regardless of theme (nodes are red, edges stay neutral) */
+    function edgeColor(t) {
         if (t < 0.5) return C0.clone().lerp(C1, t * 2);
         return C1.clone().lerp(C2, (t - 0.5) * 2);
     }
@@ -1842,8 +1849,8 @@ function toggleExpand(btn, selector) {
         eCols.push(ca.r, ca.g, ca.b, cb.r, cb.g, cb.b);
     }
     for (let l = 0; l < NL - 1; l++) {
-        const ca = lerpColor(l / (NL - 1));
-        const cb = lerpColor((l + 1) / (NL - 1));
+        const ca = edgeColor(l / (NL - 1));        /* always gray */
+        const cb = edgeColor((l + 1) / (NL - 1)); /* always gray */
         nodePos[l].forEach(a => nodePos[l + 1].forEach(b => addEdge(a, b, ca, cb)));
     }
     const eGeo = new THREE.BufferGeometry();
